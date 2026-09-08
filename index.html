@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Orion — Mine. Hold. Swap.</title>
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#14110d">
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/site.css">
+<style>
+body{margin:0;background:#14110d;color:#efe6d6;font-family:"Source Sans 3",system-ui,sans-serif;}
+.wrap{width:min(1180px,calc(100% - 2rem));margin-inline:auto;padding:1.2rem 0 3rem;}
+a{color:#e0a25a;}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:.55rem 1.1rem;border-radius:5px;text-decoration:none;border:1px solid #3a3228;color:#efe6d6;}
+.btn-fill{background:#c56a32;color:#1a1008;border-color:#c56a32;font-weight:600;}
+h1{font-family:Georgia,serif;font-weight:550;letter-spacing:-.03em;font-size:clamp(2.2rem,4vw,4.4rem);max-width:14ch;margin:.4rem 0 1rem;}
+.kicker{font-family:ui-monospace,monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#a89880;}
+.lede{color:#a89880;max-width:42ch;font-size:1.2rem;}
+header{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 0;}
+.brand{color:#efe6d6;text-decoration:none;display:flex;gap:.6rem;align-items:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<a class="brand" href="./"><img src="assets/mark.svg" width="36" height="36" alt=""><strong>Orion</strong></a>
+<nav><a class="btn" href="ops.html">Ops</a> <a class="btn btn-fill" href="app/">Open app</a></nav>
+</header>
+<p class="kicker">Pool · Vault · Desk</p>
+<h1>Mine into a wallet you hold.</h1>
+<p class="lede">Prototype desk for a multi-currency pool, on-device vault, and non-custodial convert. Not a live pool or licensed book.</p>
+<p><a class="btn btn-fill" href="app/">Launch prototype</a> <a class="btn" href="https://github.com/nebula-technological-innovation/orion-desk">GitHub</a></p>
+<p class="kicker" style="margin-top:2.5rem">What shipped</p>
+<p>Workspace source of truth: artifacts/dev/orion. FPPS workbook and vendor shortlist are in ops. Vercel project orion-desk is linked to this repo.</p>
+</div>
+</body>
+</html>
