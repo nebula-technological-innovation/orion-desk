@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orion ops — vendors, float, rails</title>
+  <meta name="description" content="Stratum vendor shortlist, FPPS float math, swap rails, and wallet libraries for the Orion prototype.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#14110d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/site.css">
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap site-header">
+      <a class="brand" href="./">
+        <img class="mark" src="assets/mark.svg" width="36" height="36" alt="">
+        <div><strong>Orion</strong><span> ops</span></div>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="./">Site</a>
+        <a class="btn btn-ghost" href="app/">Open app</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main" class="wrap section">
+    <p class="kicker">Operator pack · 2026-09-07</p>
+    <h1>How to stand this up without lying about it.</h1>
+    <p class="intro">The app is a desk. A live pool is a treasury plus stratum. A no-KYC convert is a router, not a book.</p>
+    <h2>1. Stratum vendors</h2>
+    <p class="intro">Do not write a stratum server. Buy or fork something that already speaks ASICs.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Option</th><th>Role</th><th>Algo fit</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr><td>ckpool (Kolivas)</td><td>BTC pool / proxy</td><td>SHA-256. SV2 in source Jul 2026.</td><td>Default BTC path. GPLv3.</td></tr>
+        <tr><td>SRI / sv2-apps</td><td>Stratum V2 libs</td><td>SHA-256</td><td>Pair with V1→V2 proxy for stock Antminer firmware.</td></tr>
+        <tr><td>mkpool</td><td>Solo pool</td><td>SHA-256 solo</td><td>Sidecar, not the FPPS book.</td></tr>
+        <tr><td>Scrypt stack</td><td>LTC+DOGE merge</td><td>Scrypt</td><td>Separate stratum. Do not stretch ckpool.</td></tr>
+        <tr><td>Kaspa stratum</td><td>kHeavyHash</td><td>KAS</td><td>PPLNS until that book has its own float table.</td></tr>
+      </tbody>
+    </table></div>
+    <h2>2. FPPS float</h2>
+    <p class="intro">FPPS is insurance. Network snapshot: ~930.7 EH/s, subsidy 3.125 BTC, fee proxy 0.10 BTC, ~$79,110, 14-day horizon, 1% fee.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Book size</th><th>P(zero in 14d)</th><th>Offer FPPS?</th></tr></thead>
+      <tbody>
+        <tr><td>100 TH–10 PH</td><td>~98–100%</td><td>No. PPLNS only.</td></tr>
+        <tr><td>100 PH</td><td>~80%</td><td>Only with an outside backstop.</td></tr>
+        <tr><td>1 EH</td><td>~11%</td><td>Conditional. Fund the spreadsheet.</td></tr>
+        <tr><td>10 EH</td><td>~0%</td><td>Standard if treasury is funded.</td></tr>
+      </tbody>
+    </table></div>
+    <p>Hot wallet ≤ 2 days of liability. User seeds never land on pool boxes. Workbook is in the workspace at artifacts/dev/orion/ops/orion-fpps-float.xlsx.</p>
+    <h2>3. Swap rails</h2>
+    <p>THORChain or Chainflip as quote backends. Hosted instant-exchange APIs are a money-transmitter shape — reject as the core.</p>
+    <h2>4. Vault libraries</h2>
+    <p>Replace the demo wordlist with <code>@scure/bip39</code> + <code>@scure/bip32</code> before mainnet.</p>
+    <h2>5. Legal posture</h2>
+    <p>A pool that pays on-chain to miner-controlled addresses is a service. A hosted convert with balances and no KYC is the wrong object. Keep the desk as a router. Not legal advice.</p>
+    <p><a href="app/">App</a> · <a href="./">Site</a></p>
+  </main>
+  <footer class="site-footer"><div class="wrap"><span>Orion ops</span><span>Not a live pool.</span></div></footer>
+</body>
+</html>
