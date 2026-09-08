@@ -16,10 +16,11 @@ Updated: 2026-09-08
 - Ops page + FPPS workbook + stratum vendor shortlist
 - Public repo + Vercel project linked to main
 - Split scripts so GitHub push stays under size limits
+- Production alias serving the complete marketing page and app
 
 ## Next
-- Confirm production alias serves views.js and the full marketing page
-- Point a Nebula subdomain only after the tree on main is complete
+- Point a Nebula subdomain only if you want this off the Vercel alias
+- Upload the FPPS workbook to GitHub if operators need it without the workspace
 - Do not treat this as a live pool or licensed book
 
 ## Blockers
