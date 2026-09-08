@@ -1,38 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Orion — Mine. Hold. Swap.</title>
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<meta name="theme-color" content="#14110d">
-<link rel="stylesheet" href="styles/tokens.css">
-<link rel="stylesheet" href="styles/site.css">
-<style>
-body{margin:0;background:#14110d;color:#efe6d6;font-family:"Source Sans 3",system-ui,sans-serif;}
-.wrap{width:min(1180px,calc(100% - 2rem));margin-inline:auto;padding:1.2rem 0 3rem;}
-a{color:#e0a25a;}
-.btn{display:inline-flex;align-items:center;min-height:44px;padding:.55rem 1.1rem;border-radius:5px;text-decoration:none;border:1px solid #3a3228;color:#efe6d6;}
-.btn-fill{background:#c56a32;color:#1a1008;border-color:#c56a32;font-weight:600;}
-h1{font-family:Georgia,serif;font-weight:550;letter-spacing:-.03em;font-size:clamp(2.2rem,4vw,4.4rem);max-width:14ch;margin:.4rem 0 1rem;}
-.kicker{font-family:ui-monospace,monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:#a89880;}
-.lede{color:#a89880;max-width:42ch;font-size:1.2rem;}
-header{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 0;}
-.brand{color:#efe6d6;text-decoration:none;display:flex;gap:.6rem;align-items:center;}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orion — Mine. Hold. Swap.</title>
+  <meta name="description" content="Multi-currency mining pool, self-custody wallet, and no-KYC swap. Rewards pay on-chain to keys you hold.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#14110d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,550&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/site.css">
 </head>
 <body>
-<div class="wrap">
-<header>
-<a class="brand" href="./"><img src="assets/mark.svg" width="36" height="36" alt=""><strong>Orion</strong></a>
-<nav><a class="btn" href="ops.html">Ops</a> <a class="btn btn-fill" href="app/">Open app</a></nav>
-</header>
-<p class="kicker">Pool · Vault · Desk</p>
-<h1>Mine into a wallet you hold.</h1>
-<p class="lede">Prototype desk for a multi-currency pool, on-device vault, and non-custodial convert. Not a live pool or licensed book.</p>
-<p><a class="btn btn-fill" href="app/">Launch prototype</a> <a class="btn" href="https://github.com/nebula-technological-innovation/orion-desk">GitHub</a></p>
-<p class="kicker" style="margin-top:2.5rem">What shipped</p>
-<p>Workspace source of truth: artifacts/dev/orion. FPPS workbook and vendor shortlist are in ops. Vercel project orion-desk is linked to this repo.</p>
-</div>
+  <a class="skip" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap site-header">
+      <a class="brand" href="./">
+        <img class="mark" src="assets/mark.svg" width="36" height="36" alt="">
+        <div>
+          <strong>Orion</strong>
+          <span> by Nebula</span>
+        </div>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a class="hide-sm" href="#instruments">Instruments</a>
+        <a class="hide-sm" href="#coins">Coins</a>
+        <a class="hide-sm" href="#limits">Limits</a>
+        <a class="hide-sm" href="ops.html">Ops</a>
+        <a class="btn btn-ghost" href="app/">Open app</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="wrap hero">
+      <div>
+        <p class="kicker">Pool · Vault · Desk</p>
+        <h1>Mine into a wallet you hold.</h1>
+        <p class="lede">Better than a pool dashboard plus a CEX account: hash settles on-chain to keys on this device, then converts on public rails with no deposit book and no passport file.</p>
+        <div class="hero-actions">
+          <a class="btn btn-fill" href="app/">Launch prototype</a>
+          <a class="btn btn-ghost" href="#instruments">How it is wired</a>
+        </div>
+      </div>
+      <aside class="hero-panel" aria-label="Live-style snapshot">
+        <div class="stat-row">
+          <div class="stat"><b class="tabular">1%</b><span>Pool fee target</span></div>
+          <div class="stat"><b class="tabular">FPPS</b><span>Payout scheme</span></div>
+          <div class="stat"><b class="tabular">4 coins</b><span>BTC · LTC · DOGE · KAS</span></div>
+          <div class="stat"><b class="tabular">On-device</b><span>Seed storage</span></div>
+        </div>
+        <div class="coin-mini"><span>BTC · SHA-256</span><span class="tabular">stratum :3333</span></div>
+        <div class="coin-mini"><span>LTC + DOGE · Scrypt merge</span><span class="tabular">stratum :4333</span></div>
+        <div class="coin-mini"><span>KAS · kHeavyHash</span><span class="tabular">stratum :5333</span></div>
+      </aside>
+    </section>
+
+    <section class="wrap section" id="instruments">
+      <p class="kicker">Three instruments, one surface</p>
+      <h2>Pool the work. Keep the keys. Route the swap.</h2>
+      <p class="intro">RUPool-class monitoring is the first third. The other two — a vault you control and a swap that never custodians coins — are what turn a dashboard into a stack.</p>
+      <div class="instruments">
+        <article class="instrument">
+          <div class="n">01</div>
+          <div>
+            <h3>Multi-currency pool</h3>
+            <p>Point ASICs or GPU rigs at Orion stratum. Shares settle under FPPS. BTC, merged LTC/DOGE, and KAS in one login. Workers, 24h hashrate, and payouts live in the same console the reference app already trained miners to expect.</p>
+          </div>
+        </article>
+        <article class="instrument">
+          <div class="n">02</div>
+          <div>
+            <h3>Self-custody wallet</h3>
+            <p>The pool pays an address you generate here. The seed is created in the browser, stored only in this device’s local vault, and can be exported or wiped. Orion never holds a hot wallet of user funds.</p>
+          </div>
+        </article>
+        <article class="instrument">
+          <div class="n">03</div>
+          <div>
+            <h3>No-KYC swap</h3>
+            <p>Not a hosted order book. A router over non-custodial rails (THORChain-class cross-chain, plus same-chain DEX where it exists). You sign. Liquidity lives in public protocols. No account, no deposit book, no identity file.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="coins">
+      <p class="kicker">First coin set</p>
+      <h2>What the prototype speaks.</h2>
+      <p class="intro">Chosen for hardware you can actually buy — SHA-256 and Scrypt ASICs, plus kHeavyHash. Merge-mining LTC+DOGE is the honest dual-reward path, not a second pool fee.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Coin</th>
+              <th>Algo</th>
+              <th>Scheme</th>
+              <th>Fee</th>
+              <th>Min payout</th>
+              <th>Stratum (demo)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Bitcoin</td>
+              <td>SHA-256</td>
+              <td>FPPS</td>
+              <td class="num">1%</td>
+              <td class="num">0.0001 BTC</td>
+              <td class="num">stratum+tcp://pool.orion.invalid:3333</td>
+            </tr>
+            <tr>
+              <td>Litecoin</td>
+              <td>Scrypt</td>
+              <td>FPPS</td>
+              <td class="num">1%</td>
+              <td class="num">0.01 LTC</td>
+              <td class="num">stratum+tcp://pool.orion.invalid:4333</td>
+            </tr>
+            <tr>
+              <td>Dogecoin</td>
+              <td>Scrypt merge</td>
+              <td>FPPS</td>
+              <td class="num">1%</td>
+              <td class="num">10 DOGE</td>
+              <td class="num">same as LTC</td>
+            </tr>
+            <tr>
+              <td>Kaspa</td>
+              <td>kHeavyHash</td>
+              <td>PPLNS</td>
+              <td class="num">1%</td>
+              <td class="num">10 KAS</td>
+              <td class="num">stratum+tcp://pool.orion.invalid:5333</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <p class="kicker">Path</p>
+      <h2>Connect hardware. Get paid to your vault.</h2>
+      <div class="steps">
+        <article class="step">
+          <p class="kicker">01</p>
+          <h3>Create the vault</h3>
+          <p>Generate a 12-word seed on-device. Write it down. Orion stores an encrypted copy only in this browser.</p>
+        </article>
+        <article class="step">
+          <p class="kicker">02</p>
+          <h3>Point the miner</h3>
+          <p>Worker name is vault-id.rig-01. Password can be x. Hashrate should appear as shares, not as a promise.</p>
+        </article>
+        <article class="step">
+          <p class="kicker">03</p>
+          <h3>Pay out and swap</h3>
+          <p>Daily threshold to your receive address. Swap from the same screen if you want stables or another coin.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="limits">
+      <p class="kicker">What this is</p>
+      <h2>A working surface. Not a live pool.</h2>
+      <div class="limits">
+        <article class="plate">
+          <h3>Built in this pass</h3>
+          <p>Marketing site, full app shell, pool console, worker list, local vault with seed generate/import/wipe, receive addresses, send form, swap quote + sign flow, payouts ledger, settings. State persists in localStorage.</p>
+        </article>
+        <article class="plate">
+          <h3>Not claimed as live</h3>
+          <p>No real stratum servers, no FPPS treasury, no broadcast of transactions, no licensed exchange. A US-operated custodial book with no KYC is not the design. The swap is a router sketch over public non-custodial protocols.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <span>Orion prototype · Nebula Technological Innovation</span>
+      <span>Keys stay on the device. Pool and swap rails are not production.</span>
+    </div>
+  </footer>
 </body>
 </html>
