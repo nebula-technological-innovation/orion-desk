@@ -1,6 +1,6 @@
 # STATUS — Orion
 
-Updated: 2026-09-08
+Updated: 2026-09-18
 
 ## Now
 - Stack: static HTML/CSS/JS (core / views / bind)
@@ -8,20 +8,19 @@ Updated: 2026-09-08
 - GitHub: https://github.com/nebula-technological-innovation/orion-desk
 - Vercel project: orion-desk (prj_NqbQH2WDzN6TOUxuQkZnKqpuKRTc)
 - Production alias: https://orion-desk-seven.vercel.app
-- Preview alias: https://orion-desk-git-main-christian-roes-projects.vercel.app
+- Intended host: https://orion.nebulahq.work (Cloudflare 530 until two clicks in DOMAIN.md)
 
 ## Done
-- v2 desk in workspace (Farm / Pool / Vault / Desk / Payouts / Settings)
-- Live marks (CoinGecko) + mempool.space hashrate when the network allows
-- Ops page + FPPS workbook + stratum vendor shortlist
-- Public repo + Vercel project linked to main
-- Split scripts so GitHub push stays under size limits
-- Production alias serving the complete marketing page and app
+- v2 desk live on the Vercel alias
+- Ops page + computed FPPS model (FLOAT.md + CSV)
+- Public repo linked to Vercel
 
 ## Next
-- Point a Nebula subdomain only if you want this off the Vercel alias
-- Upload the FPPS workbook to GitHub if operators need it without the workspace
+- Add `orion.nebulahq.work` in Vercel Domains
+- Grey-cloud CNAME `orion` → `cname.vercel-dns.com` in Cloudflare
 - Do not treat this as a live pool or licensed book
 
 ## Blockers
+- Connected Vercel tools cannot attach a custom domain
+- nebulahq.work zone is on Cloudflare; no Cloudflare connector
 - Live URL is a prototype, not a pool

@@ -4,7 +4,8 @@ Multi-currency mining pool console + self-custody vault + no-KYC swap surface.
 
 This is a **prototype**. It does not run stratum, broadcast transactions, or custody funds.
 
-Live alias: https://orion-desk-seven.vercel.app
+Live alias: https://orion-desk-seven.vercel.app  
+Intended host: https://orion.nebulahq.work — see `DOMAIN.md`
 
 ## Run
 
@@ -42,4 +43,6 @@ Static HTML + CSS tokens. No bundler.
 ## Ops pack
 
 - `ops.html` — vendor shortlist, float rules, swap rails, vault libraries
-- `ops/orion-fpps-float.xlsx` — editable FPPS treasury model
+- `ops/FLOAT.md` + `ops/orion-fpps-float.csv` — computed FPPS treasury model
+- `ops/orion-fpps-float.xlsx` — editable workbook in the workspace
+- `DOMAIN.md` — attach `orion.nebulahq.work`
