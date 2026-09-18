@@ -11,6 +11,16 @@ Intended host: **https://orion.nebulahq.work**
 - Fetching it returns **Cloudflare 530** — hostname exists, origin is not wired.
 - Vercel project `orion-desk` (`prj_NqbQH2WDzN6TOUxuQkZnKqpuKRTc`) currently has only `*.vercel.app` aliases. The connected Vercel tools cannot add a custom domain.
 
+## Script (if you have tokens)
+
+```bash
+cd artifacts/dev/orion
+chmod +x scripts/attach-orion-host.sh
+VERCEL_TOKEN=… CF_API_TOKEN=… CF_ZONE_ID=… ./scripts/attach-orion-host.sh
+```
+
+Do not paste tokens into chat. Vercel-only still helps: the script adds the domain even if Cloudflare is done by hand.
+
 ## Two clicks (you)
 
 ### 1. Vercel — add the domain
