@@ -96,7 +96,7 @@
         </tbody>
       </table>
     </div>
-    <p>Daily liability ≈ (H_pool / H_net) × 144 × (3.125 + F) × (1 − fee). Recommended float ≈ 14 days of that liability + 1 day of share lag + z√λ × block value. Workbook: <a href="ops/orion-fpps-float.xlsx">ops/orion-fpps-float.xlsx</a> — yellow cells are inputs.</p>
+    <p>Daily liability ≈ (H_pool / H_net) × 144 × (3.125 + F) × (1 − fee). Recommended float ≈ 14 days of that liability + 1 day of share lag + z√λ × block value. Model: <a href="ops/FLOAT.md">ops/FLOAT.md</a> · <a href="ops/orion-fpps-float.csv">CSV</a>. Yellow-cell workbook stays in the workspace as <code>ops/orion-fpps-float.xlsx</code>.</p>
     <p>Hot wallet ≤ 2 days of liability. Cold / multisig holds the rest. User seeds never land on pool boxes.</p>
 
     <h2>3. Swap rails (no hosted book)</h2>
@@ -121,7 +121,7 @@
     <p>A pool that pays on-chain to miner-controlled addresses is a service. A hosted convert with balances and no KYC is a money-transmitter shape. Keep the desk as a router. Publish TOS, fee, scheme, and geo policy before inviting hashrate. This page is not legal advice.</p>
 
     <p class="kicker" style="margin-top:2rem">Also in the repo</p>
-    <p><a href="app/">App</a> · <a href="ops/orion-fpps-float.xlsx">Float workbook</a> · <a href="README.md">README</a></p>
+    <p><a href="app/">App</a> · <a href="ops/FLOAT.md">Float model</a> · <a href="ops/orion-fpps-float.csv">CSV</a> · <a href="README.md">README</a></p>
   </main>
   <footer class="site-footer"><div class="wrap"><span>Orion ops</span><span>Not a live pool.</span></div></footer>
 </body>
