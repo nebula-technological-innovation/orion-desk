@@ -1,4 +1,4 @@
-const KEY = "orion.v2";
+const KEY = "orion.v3";
 const PRICE_IDS = { BTC: "bitcoin", LTC: "litecoin", DOGE: "dogecoin", KAS: "kaspa", USDT: "tether" };
 const WORDS = ["amber","anchor","apex","arc","ash","atlas","aurora","axis","basalt","beacon","birch","bloom","bolt","brine","bronze","brook","cinder","cipher","cliff","comet","copper","crest","crown","crux","delta","drift","dusk","ember","epoch","fault","field","flint","forge","frost","garnet","glen","grain","grove","harbor","haven","hearth","helix","hollow","honor","horizon","iron","ivory","jade","keel","lance","lumen","magma","maple","mesa","mirror","mist","north","nova","oak","onyx","orbit","ore","osprey","oxide","pearl","pine","plume","prism","quartz","ridge","rift","ripple","river","sable","sage","scale","shard","sierra","signal","slate","solstice","spark","spire","stone","storm","summit","tide","timber","torch","vale","vault","vein","velvet","vertex","vessel","violet","volt","wake","walnut","wave","willow","wind","winter","wisp","wolf","yarn","yield","zephyr","zinc","anvil","kepler","lodestar"];
 const COINS = {
@@ -13,8 +13,22 @@ let prices = { ...FALLBACK };
 let changes = { BTC: -1.5, LTC: 0.8, DOGE: -0.3, KAS: 12.8, USDT: 0 };
 let netEh = 930.7;
 let priceAsOf = "cached";
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
 function rand(n) { const a = new Uint32Array(n); crypto.getRandomValues(a); return [...a]; }
-function generateSeed() { return rand(12).map((n) => WORDS[n % WORDS.length]); }
+function unbiasedWord() {
+  const limit = Math.floor(0x100000000 / WORDS.length) * WORDS.length;
+  let n = rand(1)[0];
+  while (n >= limit) n = rand(1)[0];
+  return WORDS[n % WORDS.length];
+}
+function generateSeed() { return Array.from({ length: 12 }, unbiasedWord); }
 function mockAddress(coin, seed) {
   const src = (seed || ["orion"]).join("-") + coin;
   let h = 2166136261;
@@ -28,7 +42,7 @@ function mockAddress(coin, seed) {
 }
 function defaultState() {
   return {
-    version: 2, vaultOn: true, seed: generateSeed(), reveal: false, convertTo: "BTC", autoConvert: true, powerKw: 3.4, kwh: 0.07,
+    version: 3, vaultOn: true, seed: generateSeed(), reveal: false, convertTo: "BTC", autoConvert: true, powerKw: 3.4, kwh: 0.07,
     workers: [
       { id: "s21-01", coin: "BTC", th: 245, reject: 0.4, temp: 66, status: "up" },
       { id: "s21-02", coin: "BTC", th: 243, reject: 0.6, temp: 69, status: "up" },
@@ -49,10 +63,11 @@ function defaultState() {
 }
 function load() {
   try {
-    const raw = localStorage.getItem(KEY);
+    const raw = localStorage.getItem(KEY) || localStorage.getItem("orion.v2");
     if (!raw) { const s = defaultState(); save(s); return s; }
     const s = JSON.parse(raw);
     if (!s.version || s.version < 2) return defaultState();
+    s.version = 3;
     return s;
   } catch { return defaultState(); }
 }
@@ -88,12 +103,12 @@ function bars(n = 28) {
   return `<div class="bars" aria-hidden="true">${parts.join("")}</div>`;
 }
 function banner() {
-  return `<p class="banner"><strong>Prototype desk.</strong> Live marks from CoinGecko when the network allows. Shares, sends, and fills stay on this device. Orion is not a live pool or a licensed book.</p>`;
+  return `<p class="banner"><strong>Prototype desk.</strong> Live marks from CoinGecko when the network allows. Shares, sends, and fills stay on this device. Orion is not a live pool or a licensed book. Wordlist is a demo list — not BIP-39.</p>`;
 }
 function chg(coin) {
   const n = changes[coin] || 0;
   return `<span class="${n >= 0 ? "up" : "dn"}">${n >= 0 ? "+" : ""}${n.toFixed(2)}%</span>`;
 }
 function workerTable() {
-  return `<table class="dense"><thead><tr><th>Worker</th><th>Coin</th><th class="right">Rate</th><th class="right">Reject</th><th class="right">Temp</th><th>State</th></tr></thead><tbody>${state.workers.map((w) => `<tr><td>${w.id}</td><td>${w.coin}</td><td class="right">${fmt(w.th, 1)} ${COINS[w.coin].unit}</td><td class="right">${fmt(w.reject, 1)}%</td><td class="right">${w.temp}°</td><td><span class="pill ${w.status === "up" ? "ok" : "warn"}">${w.status}</span></td></tr>`).join("")}</tbody></table>`;
+  return `<table class="dense"><thead><tr><th>Worker</th><th>Coin</th><th class="right">Rate</th><th class="right">Reject</th><th class="right">Temp</th><th>State</th></tr></thead><tbody>${state.workers.map((w) => `<tr><td>${escapeHtml(w.id)}</td><td>${escapeHtml(w.coin)}</td><td class="right">${fmt(w.th, 1)} ${escapeHtml(COINS[w.coin].unit)}</td><td class="right">${fmt(w.reject, 1)}%</td><td class="right">${w.temp}°</td><td><span class="pill ${w.status === "up" ? "ok" : "warn"}">${escapeHtml(w.status)}</span></td></tr>`).join("")}</tbody></table>`;
 }
