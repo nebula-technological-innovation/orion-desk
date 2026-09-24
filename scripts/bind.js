@@ -31,7 +31,9 @@ function bind() {
   root.querySelector("#add-worker")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
-    state.workers.push({ id: String(f.get("id")).trim(), coin: String(f.get("coin")), th: Number(f.get("th")), reject: 0.5, temp: 64, status: "up" });
+    const id = String(f.get("id")).trim().slice(0, 40);
+    if (!/^[-a-zA-Z0-9._]+$/.test(id)) { toast("Worker name must be plain text"); return; }
+    state.workers.push({ id, coin: String(f.get("coin")), th: Number(f.get("th")), reject: 0.5, temp: 64, status: "up" });
     save(state); render();
   });
   root.querySelector("#calc-form")?.addEventListener("submit", (e) => {
@@ -42,7 +44,7 @@ function bind() {
   });
   root.querySelector("#import-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
-    const words = String(new FormData(e.target).get("words")).trim().split(/\s+/).filter(Boolean);
+    const words = String(new FormData(e.target).get("words")).trim().split(/\s+/).filter(Boolean).map((w) => w.replace(/[^a-zA-Z-]/g, "")).filter(Boolean);
     if (words.length < 8) { toast("Need at least 8 words"); return; }
     state.seed = words; state.vaultOn = true; save(state); render();
   });
@@ -116,7 +118,11 @@ function bind() {
         toast("CSV copied"); return;
       }
       if (act === "wipe" && confirm("Remove the seed from this browser?")) { state.seed = null; state.vaultOn = false; state.reveal = false; }
-      if (act === "reset" && confirm("Reset Orion on this device?")) { localStorage.removeItem(KEY); state = defaultState(); }
+      if (act === "reset" && confirm("Reset Orion on this device?")) {
+        localStorage.removeItem(KEY);
+        localStorage.removeItem("orion.v2");
+        state = defaultState();
+      }
       save(state); render();
     });
   });
