@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "orion-pool-ledger",
+  "main": "workers/pool-ledger.js",
+  "compatibility_date": "2026-10-16",
+  "durable_objects": {
+    "bindings": [
+      { "name": "LEDGER", "class_name": "PoolLedger" }
+    ]
+  },
+  "migrations": [
+    { "tag": "v1", "new_sqlite_classes": ["PoolLedger"] }
+  ],
+  "queues": {
+    "producers": [{ "binding": "QUEUE", "queue": "orion-payouts" }],
+    "consumers": [{
+      "queue": "orion-payouts",
+      "max_batch_size": 10,
+      "max_retries": 5,
+      "dead_letter_queue": "orion-payouts-dlq"
+    }]
+  },
+  "d1_databases": [
+    { "binding": "DB", "database_name": "orion-seen", "database_id": "REPLACE_WITH_D1_ID" }
+  ]
+}
