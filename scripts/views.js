@@ -41,6 +41,13 @@ function viewPool() {
           <label class="field">Coin<select name="coin"><option>BTC</option><option>LTC</option><option>KAS</option></select></label>
           <label class="field">Rate<input name="th" type="number" step="0.1" value="240" required></label>
           <button class="btn" type="submit">Add to farm</button></form>
+        <h2 style="margin-top:1rem">Record share (ledger)</h2>
+        <form id="share-form"><label class="field">Coin<select name="coin"><option>BTC</option><option>LTC</option><option>KAS</option></select></label>
+          <label class="field">Worker<input name="worker" required placeholder="s21-01"></label>
+          <label class="field">Difficulty<input name="difficulty" type="number" step="1" value="65536" required></label>
+          <label class="field">Address<input name="address" required placeholder="bc1q…"></label>
+          <button class="btn" type="submit">Post share</button></form>
+        <div id="ledger-workers" style="margin-top:1rem"><p style="color:var(--muted)">Worker stats load when a ledger URL is set.</p></div>
       </div>
     </div>
     <div class="card" style="margin-top:1rem"><h2>Farm</h2>${workerTable()}</div>`;
@@ -96,18 +103,27 @@ function viewSwap() {
     <div class="card" style="margin-top:1rem"><h2>Desk history</h2>${state.swaps.length===0?`<p style="color:var(--muted)">No fills on this device yet.</p>`:`<table class="dense"><thead><tr><th>When</th><th>Route</th><th class="right">Out</th><th>Dest</th></tr></thead><tbody>${state.swaps.slice(0,10).map((s)=>`<tr><td>${s.t}</td><td>${s.from} → ${s.to}</td><td class="right">${fmt(s.out,6)}</td><td>${s.destMode}</td></tr>`).join("")}</tbody></table>`}</div>`;
 }
 function viewPayouts() {
-  return `${banner()}<div class="topbar"><div><p class="kicker">Payouts</p><h1>On-chain ledger</h1><p>Production entries are pool wallet → your receive address.</p></div></div>
-    <div class="card"><div class="btn-row" style="margin-bottom:.8rem"><button class="btn" data-act="export">Export CSV</button></div>
+  const pending = Object.entries(state.pending || {}).map(([c, a]) =>
+    `<div class="row"><span>${c} pending</span><b>${fmt(a, 5)} · ${usd(c, a)}</b></div>`
+  ).join("");
+  return `${banner()}<div class="topbar"><div><p class="kicker">Payouts</p><h1>On-chain ledger</h1><p>Production entries are pool wallet → your receive address. Pending is immature credit.</p></div></div>
+    <div class="grid-2">
+      <div class="card"><h2>Pending</h2>${pending || "<p>None</p>"}</div>
+      <div class="card" id="ledger-balances"><h2>Ledger balances</h2><p style="color:var(--muted)">Loading…</p></div>
+    </div>
+    <div class="card" style="margin-top:1rem"><div class="btn-row" style="margin-bottom:.8rem"><button class="btn" data-act="export">Export CSV</button></div>
       <table class="dense"><thead><tr><th>When</th><th>Coin</th><th class="right">Amount</th><th>Via</th><th>Note</th></tr></thead>
       <tbody>${state.payouts.map((p)=>`<tr><td>${p.t}</td><td>${p.coin}</td><td class="right">${fmt(p.amt,5)}</td><td>${p.via}</td><td>${p.note}</td></tr>`).join("")}</tbody></table></div>`;
 }
 function viewSettings() {
+  const ledger = state.ledgerUrl || "";
   return `${banner()}<div class="topbar"><div><p class="kicker">Settings</p><h1>Desk policy</h1></div></div>
     <form class="card" id="settings-form">
       <label class="field">Auto-convert mined coins<select name="auto"><option value="1" ${state.autoConvert?"selected":""}>On</option><option value="0" ${!state.autoConvert?"selected":""}>Off — keep mined asset</option></select></label>
       <label class="field">Convert into<select name="into"><option ${state.convertTo==="BTC"?"selected":""}>BTC</option><option ${state.convertTo==="USDT"?"selected":""}>USDT</option></select></label>
       <label class="field">Pool fee (bps)<input name="fee" type="number" min="0" max="500" value="${state.feeBps}"></label>
       <label class="field">Desk fee (bps)<input name="desk" type="number" min="0" max="200" value="${state.deskBps}"></label>
+      <label class="field">Ledger URL<input name="ledger" type="url" placeholder="https://orion-pool-ledger.workers.dev" value="${ledger}"></label>
       <label class="field">Operator notes<textarea name="notes">${state.notes||""}</textarea></label>
       <button class="btn btn-fill" type="submit">Save policy</button>
     </form>
