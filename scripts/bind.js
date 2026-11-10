@@ -28,12 +28,38 @@ function startQuoteClock() {
 }
 function bind() {
   const root = document.getElementById("workspace");
+  if (route() === "/payouts") loadLedgerBalances();
   root.querySelector("#add-worker")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
     state.workers.push({ id: String(f.get("id")).trim(), coin: String(f.get("coin")), th: Number(f.get("th")), reject: 0.5, temp: 64, status: "up" });
     save(state); render();
   });
+  root.querySelector("#share-form")?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const url = state.ledgerUrl || localStorage.getItem("orion.ledger") || "";
+    if (!url) { toast("Set ledger URL in Settings"); return; }
+    const f = new FormData(e.target);
+    try {
+      const res = await fetch(url.replace(/\/$/, "") + "/share?tenant=default", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          coin: String(f.get("coin")),
+          worker: String(f.get("worker")),
+          difficulty: Number(f.get("difficulty")),
+          address: String(f.get("address")),
+        }),
+      });
+      if (!res.ok) throw new Error(res.status);
+      const body = await res.json();
+      toast("Share recorded · " + (body.credit ?? "ok"));
+      loadLedgerWorkers();
+    } catch (err) {
+      toast("Share failed: " + err.message);
+    }
+  });
+  if (route() === "/pool") loadLedgerWorkers();
   root.querySelector("#calc-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const f = new FormData(e.target);
@@ -75,6 +101,9 @@ function bind() {
     state.convertTo = String(f.get("into"));
     state.feeBps = Number(f.get("fee"));
     state.deskBps = Number(f.get("desk"));
+    state.ledgerUrl = String(f.get("ledger") || "").trim();
+    if (state.ledgerUrl) localStorage.setItem("orion.ledger", state.ledgerUrl);
+    else localStorage.removeItem("orion.ledger");
     state.notes = String(f.get("notes"));
     save(state); toast("Policy saved"); render();
   });
@@ -120,6 +149,49 @@ function bind() {
       save(state); render();
     });
   });
+}
+async function loadLedgerWorkers() {
+  const el = document.getElementById("ledger-workers");
+  if (!el) return;
+  const url = state.ledgerUrl || localStorage.getItem("orion.ledger") || "";
+  if (!url) return;
+  try {
+    const res = await fetch(url.replace(/\/$/, "") + "/workers?tenant=default");
+    if (!res.ok) throw new Error(res.status);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || rows.length === 0) {
+      el.innerHTML = `<p style="color:var(--muted)">No worker stats yet.</p>`;
+      return;
+    }
+    el.innerHTML = `<h3>Ledger workers</h3><table class="dense"><thead><tr><th>Worker</th><th>Coin</th><th class="right">Shares</th><th class="right">Diff</th></tr></thead><tbody>${
+      rows.map((r) => `<tr><td>${r.id}</td><td>${r.coin}</td><td class="right">${r.shares}</td><td class="right">${fmt(r.difficulty, 0)}</td></tr>`).join("")
+    }</tbody></table>`;
+  } catch (e) {
+    el.innerHTML = `<p style="color:var(--muted)">Workers unavailable (${e.message}).</p>`;
+  }
+}
+async function loadLedgerBalances() {
+  const el = document.getElementById("ledger-balances");
+  if (!el) return;
+  const url = state.ledgerUrl || localStorage.getItem("orion.ledger") || "";
+  if (!url) {
+    el.innerHTML = `<h2>Ledger balances</h2><p style="color:var(--muted)">No ledger URL. Set <code>orion.ledger</code> in localStorage to the worker origin, or leave blank for local demo.</p>`;
+    return;
+  }
+  try {
+    const res = await fetch(url.replace(/\/$/, "") + "/balances?tenant=default");
+    if (!res.ok) throw new Error(res.status);
+    const rows = await res.json();
+    if (!Array.isArray(rows) || rows.length === 0) {
+      el.innerHTML = `<h2>Ledger balances</h2><p style="color:var(--muted)">No credits yet.</p>`;
+      return;
+    }
+    el.innerHTML = `<h2>Ledger balances</h2><table class="dense"><thead><tr><th>Coin</th><th>Address</th><th class="right">Amount</th></tr></thead><tbody>${
+      rows.map((r) => `<tr><td>${r.coin}</td><td><code>${String(r.address).slice(0, 12)}…</code></td><td class="right">${fmt(r.amount, 8)}</td></tr>`).join("")
+    }</tbody></table>`;
+  } catch (e) {
+    el.innerHTML = `<h2>Ledger balances</h2><p style="color:var(--muted)">Could not load ledger (${e.message}). Local demo still shown.</p>`;
+  }
 }
 async function refreshMarks() {
   try {
